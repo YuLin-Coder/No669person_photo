@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.photo.dao.PhotosDao">
+
+	<select id="selectPhotosList" resultType="com.photo.entity.Photos" parameterType="map">
+		select * from Photos where 1 = 1
+
+		<if test="map.key != null and map.key != '' ">
+			<bind name="name" value="'%' + map.key + '%'"/>
+			and title like #{name}
+		</if>
+
+		<if test="map.uid != null and map.uid != '' ">
+			and uid = #{map.uid}
+		</if>
+
+		<if test="map.tid != null and map.tid != '' ">
+			and tid = #{map.tid}
+		</if>
+		order by id desc
+
+	</select>
+	<select id="selectAllPhotos"  resultType="com.photo.entity.Photos">
+		select * from Photos
+	</select>
+
+
+	   <insert id="addPhotos" parameterType="com.photo.entity.Photos" >
+	    insert into Photos (title,photo,aid,uid,note,create_time,tid)
+	    values (#{Photos.title},#{Photos.photo},#{Photos.aid},#{Photos.uid},#{Photos.note},#{Photos.create_time},#{Photos.tid})
+   </insert>
+
+
+
+
+	<delete id="deletePhotos" parameterType="java.lang.Integer">
+	    delete from Photos
+	    where id = #{id}
+	  </delete>
+
+	<select id="selectPhotosById" parameterType="java.lang.Integer" resultType="com.photo.entity.Photos">
+     select * from Photos where id = #{id}
+    </select>
+	
+        <update id="updatePhotos" parameterType="com.photo.entity.Photos">
+      update Photos set 
+        title = #{Photos.title},
+        aid = #{Photos.aid},
+        note = #{Photos.note},
+        tid = #{Photos.tid},
+        photo = #{Photos.photo}
+        where id = #{Photos.id}
+     </update>
+
+</mapper>

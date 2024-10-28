@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.photo.dao.TipsDao">
+
+	<select id="selectTipsList" resultType="com.photo.entity.Tips" parameterType="map">
+		select * from Tips where 1 = 1
+
+		<if test="map.key != null and map.key != '' ">
+			<bind name="title" value="'%' + map.key + '%'"/>
+			and name like #{title}
+		</if>
+
+		order by id desc
+
+	</select>
+	   <insert id="addTips" parameterType="com.photo.entity.Tips" >
+	    insert into Tips (name)
+	    values (#{Tips.name})
+   </insert>
+
+
+	<delete id="deleteTips" parameterType="java.lang.Integer">
+	    delete from Tips
+	    where id = #{id}
+	  </delete>
+
+	<select id="selectTipsById" parameterType="java.lang.Integer" resultType="com.photo.entity.Tips">
+     select * from Tips where id = #{id}
+    </select>
+	
+        <update id="updateTips" parameterType="com.photo.entity.Tips">
+      update Tips set 
+        name = #{Tips.name}
+        where id = #{Tips.id}
+     </update>
+
+</mapper>

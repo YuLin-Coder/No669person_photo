@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.photo.dao.UserDao">
+
+	<select id="selectUserList" resultType="com.photo.entity.User" parameterType="map">
+		select * from User where 1 = 1
+
+		<if test="map.key != null and map.key != '' ">
+			<bind name="name" value="'%' + map.key + '%'"/>
+			and nickname like #{name}
+		</if>
+
+		order by id desc
+
+	</select>
+	   <insert id="addUser" parameterType="com.photo.entity.User" >
+	    insert into User (nickname,sex,phone, photo ,registe_time,pwd)
+	    values (#{User.nickname},#{User.sex},
+	    #{User.phone},#{User.photo},#{User.registe_time},#{User.pwd})
+   </insert>
+
+
+    <select id="selectAdmin" resultType="com.photo.entity.Admin" parameterType="com.photo.entity.Admin">
+      select * from admin  where username = #{username} and pwd = #{password}
+   </select>
+
+	<select id="selectUser" resultType="com.photo.entity.User" parameterType="com.photo.entity.User">
+    select * from User  where phone = #{username} and pwd = #{password}
+   </select>
+
+	<select id="selectUserByPhone" resultType="com.photo.entity.User" parameterType="com.photo.entity.User">
+    select * from User  where phone = #{User.phone}
+   </select>
+
+	<delete id="deleteUser" parameterType="java.lang.Integer">
+	    delete from User
+	    where id = #{id}
+	  </delete>
+
+	<select id="selectUserById" parameterType="java.lang.Integer" resultType="com.photo.entity.User">
+     select * from User where id = #{id}
+    </select>
+	
+        <update id="updateUser" parameterType="com.photo.entity.User">
+      update User set 
+        nickname = #{User.nickname},
+        sex = #{User.sex},
+        phone = #{User.phone},
+        photo = #{User.photo},
+        pwd = #{User.pwd}
+        where id = #{User.id}
+     </update>
+    <update id="updateAdmin" parameterType="com.photo.entity.Admin">
+		update admin set
+		pwd = #{admin.pwd},
+		username = #{admin.username},
+		nickname = #{admin.nickname}
+		where id = #{admin.id}
+	</update>
+   
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.photo.dao.AblumDao">
+
+	<select id="selectAblumList" resultType="com.photo.entity.Ablum" parameterType="map">
+		select * from Ablum where 1 = 1
+
+		<if test="map.key != null and map.key != '' ">
+			<bind name="name" value="'%' + map.key + '%'"/>
+			and title like #{name}
+		</if>
+
+		<if test="map.uid != null and map.uid != '' ">
+			and uid = #{map.uid}
+		</if>
+		order by id desc
+
+	</select>
+
+
+	   <insert id="addAblum" parameterType="com.photo.entity.Ablum" >
+	    insert into Ablum (cid,uid,title,photo,note,create_date)
+	    values (#{Ablum.cid},#{Ablum.uid},#{Ablum.title},#{Ablum.photo},#{Ablum.note},#{Ablum.create_date})
+   </insert>
+
+
+
+
+	<delete id="deleteAblum" parameterType="java.lang.Integer">
+	    delete from Ablum
+	    where id = #{id}
+	  </delete>
+
+
+	<select id="selectAblumById" parameterType="java.lang.Integer" resultType="com.photo.entity.Ablum">
+     select * from Ablum where id = #{id}
+    </select>
+
+	
+        <update id="updateAblum" parameterType="com.photo.entity.Ablum">
+      update Ablum set
+        cid = #{Ablum.cid},
+        title = #{Ablum.title},
+        photo = #{Ablum.photo},
+        note = #{Ablum.note}
+        where id = #{Ablum.id}
+     </update>
+
+</mapper>

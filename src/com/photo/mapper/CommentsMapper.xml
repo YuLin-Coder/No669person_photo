@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.photo.dao.CommentsDao">
+
+	<select id="selectCommentsList" resultType="com.photo.entity.Comments" parameterType="map">
+		select * from Comments where 1 = 1
+
+		<if test="map.key != null and map.key != '' ">
+			<bind name="name" value="'%' + map.key + '%'"/>
+			and content like #{name}
+		</if>
+
+		<if test="map.uid != null and map.uid != '' ">
+			and uid = #{map.uid}
+		</if>
+		<if test="map.pid != null and map.pid != '' ">
+			and pid = #{map.pid}
+		</if>
+		order by id desc
+
+	</select>
+	<select id="selectAllComments"  resultType="com.photo.entity.Comments">
+		select * from Comments
+	</select>
+	   <insert id="addComments" parameterType="com.photo.entity.Comments" >
+	    insert into Comments (content,uid,create_time,pid)
+	    values (#{Comments.content},#{Comments.uid},#{Comments.create_time},#{Comments.pid})
+   </insert>
+
+	<delete id="deleteComments" parameterType="java.lang.Integer">
+	    delete from Comments
+	    where id = #{id}
+	  </delete>
+
+	<select id="selectCommentsById" parameterType="java.lang.Integer" resultType="com.photo.entity.Comments">
+     select * from Comments where id = #{id}
+    </select>
+	
+        <update id="updateComments" parameterType="com.photo.entity.Comments">
+      update Comments set 
+        content = #{Comments.content}
+        where id = #{Comments.id}
+     </update>
+
+</mapper>
